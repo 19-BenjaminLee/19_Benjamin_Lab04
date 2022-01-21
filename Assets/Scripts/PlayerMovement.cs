@@ -20,4 +20,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         PlayerRigidBody.AddForce(movement * speed * Time.deltaTime);
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Coin")
+        {
+            Debug.Log("Score add 1");
+        }
+    }
 }
