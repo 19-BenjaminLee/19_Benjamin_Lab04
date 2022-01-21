@@ -4,21 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerLvl2Movement : MonoBehaviour
 {
     public float speed;
     Rigidbody PlayerRigidBody;
 
     // Score //
-    public Text txtScore;
-    private int score;
+    public Text txtScoreLvl2;
+    private int scoreLvl2;
+
+    public Text txtTimer;
+    float Timer = 90f;
 
     // Start is called before the first frame update
     void Start()
     {
         PlayerRigidBody = GetComponent<Rigidbody>();
-        
-        txtScore.text = "Score: " + score.ToString();
+
+        txtScoreLvl2.text = "Score: " + scoreLvl2.ToString();
+        txtTimer.text = "Timer: " + Timer.ToString("0");
     }
 
     // Update is called once per frame
@@ -30,26 +34,37 @@ public class PlayerMovement : MonoBehaviour
         PlayerRigidBody.AddForce(movement * speed * Time.deltaTime);
 
         // Win Condition //
-        if (score >= 4)
+        if (scoreLvl2 >= 7)
         {
-            SceneManager.LoadScene("Lvl2");
+            SceneManager.LoadScene("GameWin");
+        }
+    }
+
+    void Update()
+    {
+        //timer
+        Timer -= Time.deltaTime;
+        txtTimer.text = "Timer: " + Timer.ToString("0");
+        if (Timer <= 0)
+        {
+            SceneManager.LoadScene("GameLose");
         }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Coin")
+        if (other.gameObject.tag == "Coin")
         {
-            score += 1;
-            txtScore.text = "Score: " + score.ToString();
+            scoreLvl2 += 1;
+            txtScoreLvl2.text = "Score: " + scoreLvl2.ToString();
             Destroy(other.gameObject);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Hazard")
+        if (collision.gameObject.tag == "Hazard")
         {
             SceneManager.LoadScene("GameLose");
         }
